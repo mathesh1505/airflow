@@ -130,3 +130,151 @@ DAG → Scheduler → Executor → Worker → Task Execution
 
 ---
 
+# 1.3 Executor
+
+An **Executor** defines **how and where tasks are executed** in Apache Airflow.
+
+The executor works with the **Scheduler** to run tasks on workers.
+
+---
+
+## Role of Executor
+
+* Receives tasks from Scheduler
+* Sends tasks to workers
+* Manages task execution
+
+### High-Level Flow
+
+```
+DAG → Scheduler → Executor → Worker → Task
+```
+
+---
+
+## Common Executor Types
+
+### 🔹 Sequential Executor
+
+* Runs one task at a time
+* Used for testing only
+
+### 🔹 Local Executor
+
+* Runs tasks in parallel on a single machine
+* Used for small to medium workloads
+
+### 🔹 Celery Executor
+
+* Distributed execution
+* Uses message broker (Redis/RabbitMQ)
+* Suitable for large-scale pipelines
+
+### 🔹 Kubernetes Executor
+
+* Runs each task in a Kubernetes pod
+* Highly scalable and cloud-native
+
+---
+
+## When to Use Which Executor
+
+| Executor   | Best For               |
+| ---------- | ---------------------- |
+| Sequential | Learning & testing     |
+| Local      | Small teams            |
+| Celery     | Enterprise workloads   |
+| Kubernetes | Cloud-native pipelines |
+
+---
+
+# 1.4 Operators
+
+Operators define **what action a task performs**.
+
+Each task in a DAG is created from an operator.
+
+---
+
+## 1.4.1 BashOperator
+
+Executes shell commands.
+
+### Use Cases
+
+* Run shell scripts
+* Call Linux commands
+
+
+---
+
+## 1.4.2 PythonOperator
+
+Executes a Python function.
+
+### Use Cases
+
+* Data processing
+* API calls
+* Custom logic
+
+---
+
+## 1.4.3 Sensor
+
+Sensors **wait for a condition to be met**.
+
+### Common Sensors
+
+* FileSensor
+* ExternalTaskSensor
+* TimeSensor
+
+### Use Cases
+
+* Wait for file arrival
+* Wait for upstream DAG completion
+
+---
+
+## 1.4.4 SubDagOperator
+
+Used to create **nested DAGs** inside a parent DAG.
+
+⚠️ *Not recommended for new designs* (performance issues).
+
+### Use Cases
+
+* Legacy workflows
+* Grouping tasks (now replaced by Task Groups)
+
+---
+
+## 1.4.5 TriggerDagRunOperator
+
+Triggers another DAG from the current DAG.
+
+### Use Cases
+
+* Modular pipelines
+* Master-child DAG pattern
+
+
+---
+
+## Summary Table
+
+| Component             | Purpose              |
+| --------------------- | -------------------- |
+| Executor              | Executes tasks       |
+| BashOperator          | Run shell commands   |
+| PythonOperator        | Run Python functions |
+| Sensor                | Wait for conditions  |
+| SubDagOperator        | Nested DAGs          |
+| TriggerDagRunOperator | Trigger another DAG  |
+
+---
+
+
+
+
